@@ -31,7 +31,7 @@ class Board:
                 pygame.draw.line(self.screen, 'black', (0, y), (self.width, y),)
         for x in range(0, self.width, 50):
             for y in range(0, self.height, 50):
-                Cell(0, x, y, self.screen).draw()
+                Cell(0, x, y, self.screen)
     def select(self, row, col):
         """
         Marks the cell at (row, col) in the board as the current selected cell.
