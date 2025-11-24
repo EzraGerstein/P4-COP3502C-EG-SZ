@@ -1,3 +1,6 @@
+import pygame
+from cell import Cell
+
 class Board:
     def __init__(self, width, height, screen, difficulty):
         """
@@ -5,12 +8,40 @@ class Board:
 	    screen is a window from PyGame.
 	    difficulty is a variable to indicate if the user chose easy medium, or hard.
         """
+        self.width = width
+        self.height = height
+        self.difficulty = difficulty
+        pygame.init()
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen.fill('white')
+        self.draw()
+        clock = pygame.time.Clock()
+        for x in range(0, self.width, 50):
+            for y in range(0,self.height, 50):
+                Cell(0, x, y, self.screen).draw()
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            pygame.display.flip()
+            clock.tick(60)
 
     def draw(self):
         """
         Draws an outline of the Sudoku grid, with bold lines to delineate the 3x3 boxes.
 	    Draws every cell on this board.
         """
+        for x in range(0, self.width, 50):
+            if x % 150 == 0:
+                pygame.draw.line(self.screen, 'black', (x, 0), (x, self.height), 3)
+            else:
+                pygame.draw.line(self.screen, 'black', (x, 0), (x, self.height))
+        for y in range(0, self.height, 50):
+            if y % 150 == 0:
+                pygame.draw.line(self.screen, 'black', (0, y), (self.width, y), 3)
+            else:
+                pygame.draw.line(self.screen, 'black', (0, y), (self.width, y),)
 
     def select(self, row, col):
         """
@@ -68,3 +99,4 @@ class Board:
         """
         Check whether the Sudoku board is solved correctly.
         """
+Board(450, 450, 20, 30)
