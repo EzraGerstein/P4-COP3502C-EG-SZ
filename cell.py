@@ -28,8 +28,7 @@ class Cell:
 	    The cell is outlined red if it is currently selected.
         """
         if self.value == 0:
-            font = pygame.font.SysFont('Arial', 30)
-            self.screen.blit(font.render('', True, (0, 0, 0)), (self.row, self.col))
+            pass
         else:
             font = pygame.font.SysFont('Arial', 30)
             self.screen.blit(font.render('str(self.value)', True, (0, 0, 0)), (self.row, self.col))

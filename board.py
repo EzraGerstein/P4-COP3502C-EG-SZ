@@ -11,27 +11,14 @@ class Board:
         self.width = width
         self.height = height
         self.difficulty = difficulty
-        pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.screen.fill('white')
-        self.draw()
-        clock = pygame.time.Clock()
-        for x in range(0, self.width, 50):
-            for y in range(0,self.height, 50):
-                Cell(0, x, y, self.screen).draw()
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-            pygame.display.flip()
-            clock.tick(60)
 
     def draw(self):
         """
         Draws an outline of the Sudoku grid, with bold lines to delineate the 3x3 boxes.
 	    Draws every cell on this board.
         """
+        self.screen.fill('white')
         for x in range(0, self.width, 50):
             if x % 150 == 0:
                 pygame.draw.line(self.screen, 'black', (x, 0), (x, self.height), 3)
@@ -42,7 +29,9 @@ class Board:
                 pygame.draw.line(self.screen, 'black', (0, y), (self.width, y), 3)
             else:
                 pygame.draw.line(self.screen, 'black', (0, y), (self.width, y),)
-
+        for x in range(0, self.width, 50):
+            for y in range(0, self.height, 50):
+                Cell(0, x, y, self.screen).draw()
     def select(self, row, col):
         """
         Marks the cell at (row, col) in the board as the current selected cell.
