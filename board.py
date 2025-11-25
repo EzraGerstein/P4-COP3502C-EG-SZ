@@ -104,18 +104,37 @@ class Board:
         """
         Returns a Boolean value indicating whether the board is full or not.
         """
+        for row in range(9):
+            for col in range(9):
+                if self.cell_holder[row][col].value == 0:
+                    return False
+        return True
+
 
     def update_board(self):
         """
         Updates the underlying 2D board with the values in all cells.
         """
+        for row in range(9):
+            for col in range(9):
+                self.sudoku_b[row][col].value = self.cell_holder[row][col].value
 
     def find_empty(self):
         """
         Finds an empty cell and returns its row and col as a tuple (x,y).
         """
+        for row in range(9):
+            for col in range(9):
+                if self.cell_holder[row][col].value == 0:
+                    return row, col
+        return None
 
     def check_board(self):
         """
         Check whether the Sudoku board is solved correctly.
         """
+        #The logic - loop over row and col to check for the number and then check for number on each 3 x 3 square.
+
+
+
+
