@@ -150,12 +150,13 @@ class Board:
         Check whether the Sudoku board is solved correctly.
         """
         #The logic > loop over row and col to check for the number and then check for number on each 3 x 3 square.
+        self.update_board()
         for row in range(9):
             for col in range(9):
                 num = self.cell_holder[row][col].value
                 if num == 0:
                     return False
-                if not SudokuGenerator.is_valid(row, col, num):
+                if not self.generator.is_valid(row, col, num):
                     return False
         return True
 
