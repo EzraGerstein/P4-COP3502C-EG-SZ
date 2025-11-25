@@ -18,10 +18,13 @@ class Board:
 
         if difficulty == 3:
             self.sudoku_b = generate_sudoku(9, 50)
+            self.original_board = [row[:] for row in self.sudoku_b]
         elif difficulty == 2:
             self.sudoku_b = generate_sudoku(9, 40)
+            self.original_board = [row[:] for row in self.sudoku_b]
         else:
             self.sudoku_b = generate_sudoku(9, 30)
+            self.original_board = [row[:] for row in self.sudoku_b]
 
     def draw(self):
         """
@@ -99,6 +102,16 @@ class Board:
         Resets all cells in the board to their original values
         (0 if cleared, otherwise the corresponding digit).
         """
+        self.sudoku_b = [row[:] for row in self.original_board]
+        #here, rebuild cell constructor so the UI actually updates.
+        self.cell_holder = []
+        for row in range(9):
+            row_cells = []
+            for col in range(9):
+                c = Cell(self.sudoku_b[row][col], row, col, self.screen)
+                row_cells.append(c)
+            self.cell_holder.append(row_cells)
+        self.draw()
 
     def is_full(self):
         """
