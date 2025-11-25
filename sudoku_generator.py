@@ -233,7 +233,14 @@ class SudokuGenerator:
 	Return: None
     '''
     def remove_cells(self):
-        pass
+        for i in range(self.removed_cells):
+            while True:
+                row = random.randint(0,8)
+                col = random.randint(0,8)
+                if self.board[row][col] == 0:
+                    continue
+                self.board[row][col] = 0
+                break
 
 '''
 DO NOT CHANGE
@@ -257,4 +264,5 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
 
