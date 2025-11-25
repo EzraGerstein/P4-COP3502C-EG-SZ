@@ -133,7 +133,7 @@ class Board:
         """
         Check whether the Sudoku board is solved correctly.
         """
-        #The logic - loop over row and col to check for the number and then check for number on each 3 x 3 square.
+        #The logic > loop over row and col to check for the number and then check for number on each 3 x 3 square.
 
 
 
