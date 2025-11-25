@@ -17,12 +17,15 @@ class Board:
         self.selected_cell = None
 
         if difficulty == 3:
+            self.generator = SudokuGenerator(9, 50)
             self.sudoku_b = generate_sudoku(9, 50)
             self.original_board = [row[:] for row in self.sudoku_b]
         elif difficulty == 2:
+            self.generator = SudokuGenerator(9, 40)
             self.sudoku_b = generate_sudoku(9, 40)
             self.original_board = [row[:] for row in self.sudoku_b]
         else:
+            self.generator = SudokuGenerator(9, 30)
             self.sudoku_b = generate_sudoku(9, 30)
             self.original_board = [row[:] for row in self.sudoku_b]
 
@@ -147,7 +150,14 @@ class Board:
         Check whether the Sudoku board is solved correctly.
         """
         #The logic > loop over row and col to check for the number and then check for number on each 3 x 3 square.
-
+        for row in range(9):
+            for col in range(9):
+                num = self.cell_holder[row][col].value
+                if num == 0:
+                    return False
+                if not SudokuGenerator.is_valid(row, col, num):
+                    return False
+        return True
 
 
 
