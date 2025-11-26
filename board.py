@@ -16,15 +16,29 @@ class Board:
         self.cell_holder = []
         self.selected_cell = None
 
+        self.large_font = pygame.font.SysFont('Arial', 30)
+        self.small_font = pygame.font.SysFont('Arial', 15)
+
         if difficulty == 3:
             self.sudoku_b = generate_sudoku(9, 50)
-            self.original_board = [row[:] for row in self.sudoku_b]
+
         elif difficulty == 2:
             self.sudoku_b = generate_sudoku(9, 40)
-            self.original_board = [row[:] for row in self.sudoku_b]
         else:
             self.sudoku_b = generate_sudoku(9, 30)
-            self.original_board = [row[:] for row in self.sudoku_b]
+
+        self.original_board = [row[:] for row in self.sudoku_b]
+
+        for row in range(9):
+            row_cells = list()
+            for col in range(9):
+                value = self.sudoku_b[row][col]
+                c = Cell(value, row, col, self.screen, self.large_font, self.small_font)
+                if value != 0:
+                    c.is_original = True
+
+                row_cells.append(c)
+            self.cell_holder.append(row_cells)
 
     def draw(self):
         """
@@ -34,13 +48,10 @@ class Board:
         self.screen.fill('white')
 
         for row in range(9):
-            cell_list = list()
             for col in range(9):
-                c = Cell(self.sudoku_b[row][col], row, col, self.screen)
-                cell_list.append(c)
+                c = self.cell_holder[row][col]
                 c.draw()
-                self.screen.blit(c.white_square, (row * 50, col * 50))
-            self.cell_holder.append(cell_list)
+                self.screen.blit(c.white_square, (col * 50, row * 50))
 
         for x in range(0, self.width, 50):
             if x % 150 == 0:
@@ -60,8 +71,13 @@ class Board:
         Marks the cell at (row, col) in the board as the current selected cell.
 	    Once a cell has been selected, the user can edit its value or sketched value.
         """
-        pygame.draw.rect(self.screen, (255, 0, 0), (row * 50, col * 50, 50, 50), 3)
+        if self.selected_cell is not None:
+            self.selected_cell.is_selected = False
+            self.selected_cell.draw()
+
         self.selected_cell = self.cell_holder[row][col]
+        self.selected_cell.is_selected = True
+        self.selected_cell.draw()
 
     def click(self, x, y):
         """
@@ -71,7 +87,7 @@ class Board:
         """
         for row in range(9):
             for col in range(9):
-                if (col * 50) < y < (col * 50) + 50 and (row * 50) < x < (row * 50) + 50:
+                if (col * 50) < x < (col * 50) + 50 and (row * 50) < y < (row * 50) + 50:
                     return row, col
         return None
 
@@ -83,7 +99,6 @@ class Board:
         sketched values that are filled by themselves.
         """
         self.selected_cell.set_cell_value(0)
-        self.selected_cell.set_sketched_value(0)
 
     def sketch(self, value):
         """
@@ -91,12 +106,14 @@ class Board:
 	    It will be displayed at the top left corner of the cell using the draw() function.
         """
         self.selected_cell.set_sketched_value(value)
+
     def place_number(self, value):
         """
         Sets the value of the current selected cell equal to the user entered value.
         Called when the user presses the Enter key.
         """
         self.selected_cell.set_cell_value(value)
+
     def reset_to_original(self):
         """
         Resets all cells in the board to their original values
@@ -130,7 +147,7 @@ class Board:
         """
         for row in range(9):
             for col in range(9):
-                self.sudoku_b[row][col].value = self.cell_holder[row][col].value
+                self.sudoku_b[row][col] = self.cell_holder[row][col].value
 
     def find_empty(self):
         """
@@ -146,8 +163,21 @@ class Board:
         """
         Check whether the Sudoku board is solved correctly.
         """
-        #The logic > loop over row and col to check for the number and then check for number on each 3 x 3 square.
+        self.update_board()
+        check = SudokuGenerator(9, 0)
+        check.board = self.sudoku_b
 
+        for row in range(9):
+            for col in range(9):
+                num = self.sudoku_b[row][col]
+                if num == 0:
+                    return False
 
+                self.sudoku_b[row][col] = 0
 
+                if not check.is_valid(row, col, num):
+                    self.sudoku_b[row][col] = num
+                    return False
 
+                self.sudoku_b[row][col] = num
+        return True
