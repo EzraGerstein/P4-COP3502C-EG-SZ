@@ -22,15 +22,18 @@ class Board:
         if difficulty == 3:
             self.generator = SudokuGenerator(9, 50)
             self.sudoku_b = generate_sudoku(9, 50)
+            self.original_board = [row[:] for row in self.sudoku_b]
 
         elif difficulty == 2:
             self.generator = SudokuGenerator(9, 40)
             self.sudoku_b = generate_sudoku(9, 40)
+            self.original_board = [row[:] for row in self.sudoku_b]
         else:
             self.generator = SudokuGenerator(9, 30)
             self.sudoku_b = generate_sudoku(9, 30)
+            self.original_board = [row[:] for row in self.sudoku_b]
 
-        self.original_board = [row[:] for row in self.sudoku_b]
+
 
         for row in range(9):
             row_cells = list()
@@ -168,9 +171,9 @@ class Board:
         """
         for row in range(9):
             for col in range(9):
-                num = self.cell_holder[row][col].value
+                num = self.cell_holder[row][col]
                 if num == 0:
                     return False
-                if not SudokuGenerator.is_valid(row, col, num):
+                if not self.generator.is_valid(row, col, num):
                     return False
         return True
