@@ -20,11 +20,14 @@ class Board:
         self.small_font = pygame.font.SysFont('Arial', 15)
 
         if difficulty == 3:
+            self.generator = SudokuGenerator(9, 50)
             self.sudoku_b = generate_sudoku(9, 50)
 
         elif difficulty == 2:
+            self.generator = SudokuGenerator(9, 40)
             self.sudoku_b = generate_sudoku(9, 40)
         else:
+            self.generator = SudokuGenerator(9, 30)
             self.sudoku_b = generate_sudoku(9, 30)
 
         self.original_board = [row[:] for row in self.sudoku_b]
@@ -163,21 +166,11 @@ class Board:
         """
         Check whether the Sudoku board is solved correctly.
         """
-        self.update_board()
-        check = SudokuGenerator(9, 0)
-        check.board = self.sudoku_b
-
         for row in range(9):
             for col in range(9):
-                num = self.sudoku_b[row][col]
+                num = self.cell_holder[row][col].value
                 if num == 0:
                     return False
-
-                self.sudoku_b[row][col] = 0
-
-                if not check.is_valid(row, col, num):
-                    self.sudoku_b[row][col] = num
+                if not SudokuGenerator.is_valid(row, col, num):
                     return False
-
-                self.sudoku_b[row][col] = num
         return True
