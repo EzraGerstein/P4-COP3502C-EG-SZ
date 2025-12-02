@@ -169,11 +169,15 @@ class Board:
         """
         Check whether the Sudoku board is solved correctly.
         """
+        self.update_board()
         for row in range(9):
             for col in range(9):
-                num = self.cell_holder[row][col]
+                num = self.cell_holder[row][col].value
                 if num == 0:
                     return False
+                self.generator.board[row][col] = 0
                 if not self.generator.is_valid(row, col, num):
+                    self.generator.board[row][col] = num
                     return False
+                self.generator.board[row][col] = num
         return True
