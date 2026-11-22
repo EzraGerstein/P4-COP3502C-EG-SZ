@@ -47,7 +47,7 @@ In this project, you implement a playable Python and Pygame Sudoku game featurin
 
 #### Setup & Execution
 ```bash
-git clone [https://github.com/EzraGerstein/P4-COP3502C-EG-SZ.git](https://github.com/EzraGerstein/P4-COP3502C-EG-SZ.git)
+git clone https://github.com/EzraGerstein/P4-COP3502C-EG-SZ.git
 cd P4-COP3502C-EG-SZ
 pip install pygame
 python sudoku.py
